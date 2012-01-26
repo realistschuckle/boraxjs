@@ -20,3 +20,5 @@ To run the tests, run
 To run the example application, run
 
     npm start
+  
+API in major flux, especially with renderers. UAYOR. YMMV. WOOT!
