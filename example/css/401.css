@@ -1,0 +1,63 @@
+#login-form>div {
+  margin: 50px auto;
+  width: 300px;
+  border: 5px solid #FFF;
+  box-shadow: 0px 0px 30px #FFF;
+  background-color: #6374ab;
+  padding: 10px;
+  -webkit-border-radius: 12px;
+     -moz-border-radius: 12px;
+          border-radius: 12px;  
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+
+#login-form .input-row {
+  text-align: center;
+  margin: 10px 0;
+}
+
+#login-form input {
+  width: 280px;
+  font-size: 14pt;
+  padding: 4px;
+}
+
+#login-form button {
+  font-size: 14pt;
+  background-color: #fda71d;
+  border: 0;
+  color: #551a8b;
+  cursor: pointer;
+  padding: 8px;
+  -webkit-border-radius: 12px; 
+     -moz-border-radius: 12px; 
+          border-radius: 12px;   
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+
+#login-form button:active {
+  background-color: #d38817;
+  color: #FFF;
+}
+
+#login-form .input-actions {
+  text-align: center;
+  margin: 4px 0;
+}
+
+.image-holder {
+  background-color: #000;
+  width: 220px;
+  margin: auto;
+  padding: 4px 4px 0 4px;
+  border: 4px solid white;
+}
+
+.image-holder img {
+  background-color: #FFF;
+  padding: 10px 10px 10px;
+}

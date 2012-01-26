@@ -1,0 +1,9 @@
+{
+  "name": "borax",
+  "version": "0.1.0",
+  "main": "./lib/borax",
+  "scripts" : {
+    "test": "vows",
+    "start": "node example/server.js"
+  }
+}

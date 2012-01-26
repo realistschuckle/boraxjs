@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Example BORAX Application</title>
+    <link href="/css/index.css" rel="stylesheet">
+    <link href="/dashboard.html" rel="x.borax-start">
+    <script src="/scripts/jquery-1.7.1.js"></script>
+    <script src="/scripts/borax.js"></script>
+    <script>
+      function handlerContent(renderable) {
+        renderable.execute();
+        renderable.render(document.body);
+        renderable.executeDeferred();
+      }
+      borax.withAjax(borax.jQuery);
+      borax.start(handlerContent);
+    </script>
+  </head>
+  <body>
+    
+  </body>
+</html>
