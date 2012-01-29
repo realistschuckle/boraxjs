@@ -1,6 +1,6 @@
 var vows = require('vows')
   , assert = require('assert')
-  , borax = require('../../lib/borax')
+  , boric = require('../../lib/borax-in-client')
   , ajax = require('./fakejax')
   ;
 

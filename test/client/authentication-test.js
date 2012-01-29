@@ -1,6 +1,6 @@
 var vows = require('vows')
   , assert = require('assert')
-  , borax = require('../../lib/borax')
+  , boric = require('../../lib/borax-in-client')
   , ajax = require('./fakejax')
   ;
 
@@ -8,7 +8,7 @@ var batches = vows.describe('WWW-Authenticate handling').addBatch({
   'with a custom 401 handler': {
     topic: makeHandler,
     'I can register it': function(handler) {
-      borax.forStatus(401, handler);
+      boric.forStatus(401, handler);
     }
   }
 });
@@ -31,36 +31,36 @@ function for401(method) {
   var methodBatch = {
     topic: makeHandler,
   };
-  methodBatch['when borax gets a 401 from a ' + method.toUpperCase()] = {
+  methodBatch['when boric gets a 401 from a ' + method.toUpperCase()] = {
     topic: function(handler) { return makeFakejax(401, handler); },
-    'it calls my handler': function(borax) {
-      borax[m].apply(borax, args);
-      assert.isTrue(borax.handler(401).called);
+    'it calls my handler': function(boric) {
+      boric[m].apply(boric, args);
+      assert.isTrue(boric.handler(401).called);
     },
-    'it invokes with four arguments': function(borax) {
-      borax[m].apply(borax, args);
-      assert.lengthOf(borax.handler(401).args, 4);
+    'it invokes with four arguments': function(boric) {
+      boric[m].apply(boric, args);
+      assert.lengthOf(boric.handler(401).args, 4);
     },
-    'the first argument is status': function(borax) {
-      borax[m].apply(borax, args);
-      assert.equal(borax.handler(401).args[0], 401);
+    'the first argument is status': function(boric) {
+      boric[m].apply(boric, args);
+      assert.equal(boric.handler(401).args[0], 401);
     },
-    'the second argument are headers': function(borax) {
-      borax[m].apply(borax, args);
-      assert.deepEqual(borax.handler(401).args[1], {
+    'the second argument are headers': function(boric) {
+      boric[m].apply(boric, args);
+      assert.deepEqual(boric.handler(401).args[1], {
         'Content-Type': 'application/x-fake',
         'Content-Disposition': 'fake.xls'
       });
     },
-    'the third argument is content': function(borax) {
-      borax[m].apply(borax, args);
-      assert.deepEqual(borax.handler(401).args[2], "<some><xml/></some>");
+    'the third argument is content': function(boric) {
+      boric[m].apply(boric, args);
+      assert.deepEqual(boric.handler(401).args[2], "<some><xml/></some>");
     },
-    'the fourth argument is a callback': function(borax) {
+    'the fourth argument is a callback': function(boric) {
       var cb = function() {};
       args[args.length - 1] = cb;
-      borax[m].apply(borax, args);
-      assert.equal(borax.handler(401).args[3], cb);
+      boric[m].apply(boric, args);
+      assert.equal(boric.handler(401).args[3], cb);
     }
   };
   return {
@@ -72,14 +72,14 @@ function for200(method) {
   var methodBatch = {
     topic: makeHandler
   };
-  methodBatch['when borax gets a 200 from a ' + method.toUpperCase()] = {
+  methodBatch['when boric gets a 200 from a ' + method.toUpperCase()] = {
     topic: function(handler) {
-      borax.forStatus(401, handler);
+      boric.forStatus(401, handler);
       return makeFakejax(200, makeHandler());
     },
-    'it does not call my handler': function(borax) {
-      borax[method.toLowerCase()]('http://url', function() {});
-      assert.isFalse(borax.handler(401).called);
+    'it does not call my handler': function(boric) {
+      boric[method.toLowerCase()]('http://url', function() {});
+      assert.isFalse(boric.handler(401).called);
     }
   };
   return {
@@ -88,8 +88,8 @@ function for200(method) {
 }
 
 function makeFakejax(status, handler) {
-  borax.forStatus(status, handler);
-  borax.withAjax(ajax.provider({
+  boric.forStatus(status, handler);
+  boric.withAjax(ajax.provider({
     status: function() {
       return status;
     },
@@ -103,7 +103,7 @@ function makeFakejax(status, handler) {
       return "<some><xml/></some>";
     }
   }));
-  return borax;
+  return boric;
 }
 
 function makeHandler() {

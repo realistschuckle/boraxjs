@@ -3,19 +3,13 @@ var http = require('http')
   , urlparse = require('url').parse
   , path = require('path')
   , boris = require('../lib/borax-in-server')
-  , mediaTypeExtensions = {
-      '.html': 'text/html',
-      '.css': 'text/css',
-      '.js': 'application/javascript'
-    }
   ;
 
-var prefix = 
 fs.stat('./example/index.html', function(err) {
   if(err) {
     console.error('\nRun this application from the root of the project');
     console.error('with "npm start"\n');
-    process.exit();
+    process.exit(-1);
   }
 });
 
@@ -39,7 +33,13 @@ var challenge = function(res) {
 }
 
 var protector = boris.auth(creds, challenge);
-protector.addTree('/dashboard.html');
+                     .addTree('/dashboard.html');
+
+var mediaTypeExtensions = {
+  '.html': 'text/html',
+  '.css': 'text/css',
+  '.js': 'application/javascript'
+};
 
 var server = http.createServer(function(req, res) {
   var url = urlparse(req.url);

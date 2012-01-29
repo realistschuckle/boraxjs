@@ -10,7 +10,7 @@
         \::/__/       \::/  /       |:|  |         /:/  /       |:|  |    
          ~~            \/__/         \|__|         \/__/         \|__|   
 
-Copy the lib/borax.js file to your Web app.
+Copy the lib/borax-in-client.js file to your Web app.
 
 To run the tests, run
 
@@ -19,6 +19,9 @@ To run the tests, run
 
 To run the example application, run
 
+    cd example/scripts/
+    ln -s ../../lib/borax-in-client.js borax-in-client.js
+    cd ../..
     npm start
   
 API in major flux, especially with renderers. UAYOR. YMMV. WOOT!
