@@ -2,6 +2,7 @@ var http = require('http')
   , fs = require('fs')
   , urlparse = require('url').parse
   , path = require('path')
+  , boris = require('../lib/borax-in-server')
   , mediaTypeExtensions = {
       '.html': 'text/html',
       '.css': 'text/css',
@@ -18,6 +19,28 @@ fs.stat('./example/index.html', function(err) {
   }
 });
 
+var creds = function(scheme, params) {
+  return scheme == 'Borax-Basic' &&
+         params['name'] == 'curtis' &&
+         params['password'] == 'password';
+};
+
+var challenge = function(res) {
+  var _401 = path.join('example', path.join('assets', '401.html'));
+  fs.readFile(_401, function(err, data) {
+    if(err) {
+      res.writeHead(404, {'Content-Type': 'text/html'});
+      res.end('File Not Found');
+      return;
+    }
+    res.writeHead(401, {'Content-Type': 'text/html'});
+    res.end(data);
+  });
+}
+
+var protector = boris.auth(creds, challenge);
+protector.addTree('/dashboard.html');
+
 var server = http.createServer(function(req, res) {
   var url = urlparse(req.url);
   var asset_path = path.join('./example', url.pathname);
@@ -25,27 +48,17 @@ var server = http.createServer(function(req, res) {
     if(stat && stat.isDirectory()) {
       asset_path = path.join(asset_path, 'index.html');
     }
-    var isStart = asset_path === 'example/index.html';
-    var isAuthenticated = req.headers['Authenticate'];
-    var isAsset = asset_path.indexOf('css/') > -1 ||
-                  asset_path.indexOf('scripts/') > -1 ||
-                  asset_path.indexOf('images/') > -1;
-    var code = 200;
-    if(!isStart && !isAuthenticated && !isAsset) {
-      asset_path = path.join('example', path.join('assets', '401.html'));
-      code = 401;
-    }
-    var ext = path.extname(asset_path);
-    fs.readFile(asset_path, function(err, data) {
-      if(err) {
-        res.writeHead(404, {'Content-Type': 'text/html'});
-        res.end('File Not Found');
-        return;
-      }
-      res.writeHead(code, {
-        'Content-Type': mediaTypeExtensions[ext]
+    protector.protect(req, res, function() {
+      var ext = path.extname(asset_path);
+      fs.readFile(asset_path, function(err, data) {
+        if(err) {
+          res.writeHead(404, {'Content-Type': 'text/html'});
+          res.end('File Not Found');
+          return;
+        }
+        res.writeHead(200, {'Content-Type': mediaTypeExtensions[ext]});
+        res.end(data);
       });
-      res.end(data);
     });
   });
 });

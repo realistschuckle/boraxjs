@@ -1,11 +1,11 @@
 var vows = require('vows')
   , assert = require('assert')
-  , boris = require('../../lib/borax-server')
+  , boris = require('../../lib/borax-in-server')
   , args = [1, 2.3, 's', null, {}, "".poo, new Date(), function() {}];
   ;
 
 vows.describe('boris authentication').addBatch({
-  'after importing borax-server as boris': {
+  'after importing borax-in-server as boris': {
     topic: function() {return boris;},
     'boris has a non-null auth attribute': function(boris) {
       assert.isTrue(typeof(boris.auth) !== 'undefined');
