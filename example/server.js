@@ -32,7 +32,7 @@ var challenge = function(res) {
   });
 }
 
-var protector = boris.auth(creds, challenge);
+var protector = boris.auth(creds, challenge)
                      .addTree('/dashboard.html');
 
 var mediaTypeExtensions = {
