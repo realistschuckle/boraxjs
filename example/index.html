@@ -8,13 +8,8 @@
     <script src="/scripts/borax-in-client.js"></script>
     <script>
       var boric = require('borax-in-client.js');
-      function handlerContent(renderable) {
-        renderable.execute();
-        renderable.render(document.body);
-        renderable.executeDeferred();
-      }
       boric.withAjax(boric.jQuery);
-      boric.start(handlerContent);
+      boric.start();
     </script>
   </head>
   <body>
