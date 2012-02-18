@@ -1,0 +1,67 @@
+var fs = require('fs')
+  , path = require('path')
+  , outputdir = 'distro'
+  ;
+
+desc('Build the borax libraries, both client and server.');
+task('default', ['build-client', 'build-server'], function(params) {});
+
+
+desc('Build the borax-in-server file.');
+task('build-server', [], function(params) {
+  fs.readFile('./lib/borax-in-server.js', 'utf-8', function(err, content) {
+    if(err) {
+      console.log(err);
+    } else {
+      var outputpath = path.join(outputdir, 'borax-in-server.js');
+      fs.writeFile(outputpath, content);
+    }
+    complete();
+  });
+}, true);
+
+
+desc('Build the borax-in-client file.');
+task('build-client', [], function(params) {
+  var i = 0
+    , erred = false
+    , contents = {}
+    , files = [
+        './lib/client-status-handlers.js',
+        './lib/client-media-renderers.js',
+        './lib/client-jquery-provider.js',
+        './lib/borax-in-client-api.js'
+      ]
+    ;
+
+  files.forEach(function(file) {
+    fs.readFile(file, 'utf-8', function(err, content) {
+      if(err) {
+        console.log(err);
+        erred = true;
+      } else {
+        contents[file] = content;
+      }
+      i += 1;
+      if(i == files.length) {
+        if(!erred) {
+          var outputfile = 'borax-in-client.js';
+          fs.mkdir(outputdir);
+          var outputpath = path.join(outputdir, outputfile);
+          var output = 'var borax = {}; (function(borax) {\n';
+          files.forEach(function(file) {
+            output += contents[file];
+          });
+          output += '})(borax);\n' +
+                    'if(typeof(exports) !== "undefined") {\n' +
+                    '  exports["borax-in-client"] = borax;\n' +
+                    '} else {\n' +
+                    '  exports = {"borax-in-client": borax};\n' +
+                    '}';
+          fs.writeFile(outputpath, output);
+        }
+        complete();
+      }
+    })
+  });
+}, true);

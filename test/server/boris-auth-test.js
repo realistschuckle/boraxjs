@@ -1,6 +1,6 @@
 var vows = require('vows')
   , assert = require('assert')
-  , boris = require('../../lib/borax-in-server')
+  , boris = require('../../distro/borax-in-server')
   , args = [1, 2.3, 's', null, {}, "".poo, new Date(), function() {}];
   ;
 

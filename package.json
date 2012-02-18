@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "main": "./lib/borax",
   "scripts" : {
+    "distro": "jake",
+    "clean": "rm -rf ./distro",
     "test": "vows",
     "start": "node example/server.js"
   },
   "devDependencies": {
-    "vows": "0.6.1"
+    "vows": "0.6.1",
+    "jake": "0.2.18"
   }
 }

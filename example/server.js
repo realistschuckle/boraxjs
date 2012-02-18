@@ -2,7 +2,7 @@ var http = require('http')
   , fs = require('fs')
   , urlparse = require('url').parse
   , path = require('path')
-  , boris = require('../lib/borax-in-server')
+  , boris = require('../distro/borax-in-server')
   ;
 
 fs.stat('./example/index.html', function(err) {
