@@ -72,9 +72,7 @@ file(outputclientpath, outputclientdeps, function() {
           output += '})(borax);\n' +
                     'if(typeof(module) !== "undefined") {\n' +
                     '  module.exports = borax;\n' +
-                    '} else {\n' +
-                    '  module = {exports: borax};\n' +
-                    '}';
+                    '}\n';
           fs.writeFile(outputclientpath, output, 'utf-8', function() {
             complete();
           });

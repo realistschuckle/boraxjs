@@ -75,6 +75,4 @@ borax.in_client = function() {
 })(borax);
 if(typeof(module) !== "undefined") {
   module.exports = borax;
-} else {
-  module = {exports: borax};
 }
