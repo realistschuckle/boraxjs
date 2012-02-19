@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "./lib/borax",
   "scripts" : {
-    "distro": "jake",
+    "distro": "jake && jsmin -o distro/borax-in-client-min.js distro/borax-in-client.js",
     "clean": "rm -rf ./distro",
     "test": "jake && vows",
     "start": "node example/server.js"
@@ -11,6 +11,7 @@
   "devDependencies": {
     "vows": "0.6.1",
     "jake": "0.2.18",
-    "jsdom": "*"
+    "jsdom": "*",
+    "jsmin": "*"
   }
 }
