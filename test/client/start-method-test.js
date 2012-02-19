@@ -36,13 +36,13 @@ vows.describe('BORIC Start Method').addBatch({
     topic: function() {
       var atags = [
         fakedom.node({href: '/first.html'}),
-        fakedom.node({href: '/second.html'})
+        fakedom.node({href: '/second.html'}, true)
       ];
       var formtags = [
         fakedom.node({action: '/putman.html', method: 'put'}),
         fakedom.node({action: '/postman.html', method: 'post'}),
         fakedom.node({action: '/openarms.html', method: 'get'}),
-        fakedom.node({action: '/deleteman.html', method: 'delete'})
+        fakedom.node({action: '/deleteman.html', method: 'delete'}, true)
       ];
       var faker = fakedom.faker()
                          .stub('getElementsByTagName')
@@ -53,7 +53,9 @@ vows.describe('BORIC Start Method').addBatch({
                          .provide(formtags)
                          .stub('getElementsByTagName')
                          .withArgs('link')
-                         .provide([]);
+                         .provide([
+                           fakedom.node({rel: 'stylesheet'}),
+                         ]);
       var boric = borax.in_client().ajaxProvider(fakejax.provider());
       boric.start(faker);
       faker.atags = atags;

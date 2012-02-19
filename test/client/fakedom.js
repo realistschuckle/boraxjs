@@ -53,8 +53,8 @@
   exports.faker = function() {
     return new Faker();
   };
-  exports.node = function(attrs) {
-    return {
+  exports.node = function(attrs, isIE) {
+    var node = {
       getAttribute: function(name) {
         return attrs[name];
       },
@@ -79,5 +79,12 @@
       },
       subscriptions: []
     };
+    if(isIE) {
+      node.attachEvent = function(name, fn) {
+        node.subscriptions.push([name.substring(2), fn]);
+      };
+      delete node.addEventListener;
+    }
+    return node;
   };
 })(exports);
