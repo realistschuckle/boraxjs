@@ -4,7 +4,7 @@ var vows = require('vows')
   , args = [1, 2.3, 's', null, {}, "".poo, new Date(), function() {}];
   ;
 
-vows.describe('boris authentication').addBatch({
+vows.describe('BORIS Authentication').addBatch({
   'after importing borax-in-server as boris': {
     topic: function() {return boris;},
     'boris has a non-null auth attribute': function(boris) {

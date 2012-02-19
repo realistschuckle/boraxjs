@@ -5,11 +5,12 @@
   "scripts" : {
     "distro": "jake",
     "clean": "rm -rf ./distro",
-    "test": "vows",
+    "test": "jake && vows",
     "start": "node example/server.js"
   },
   "devDependencies": {
     "vows": "0.6.1",
-    "jake": "0.2.18"
+    "jake": "0.2.18",
+    "jsdom": "*"
   }
 }

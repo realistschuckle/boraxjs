@@ -1,14 +1,27 @@
 var fs = require('fs')
   , path = require('path')
+  , exportStatement = "if(typeof(exports) !== 'undefined') {"
   , outputdir = 'distro'
+  , outputclientfile = 'borax-in-client.js'
+  , outputserverfile = 'borax-in-server.js'
+  , outputclientpath = path.join(outputdir, outputclientfile)
+  , outputserverpath = path.join(outputdir, outputserverfile)
+  , clientfilepieces = [
+        './lib/client-status-handlers.js',
+        './lib/client-media-renderers.js',
+        './lib/client-jquery-provider.js',
+        './lib/borax-in-client-api.js'
+    ]
+  , outputclientdeps = [outputdir].concat(clientfilepieces)
   ;
 
+
 desc('Build the borax libraries, both client and server.');
-task('default', ['build-client', 'build-server'], function(params) {});
+task('default', ['build-client', 'build-server'], function() {});
 
 
 desc('Build the borax-in-server file.');
-task('build-server', [], function(params) {
+task('build-server', [], function() {
   fs.readFile('./lib/borax-in-server.js', 'utf-8', function(err, content) {
     if(err) {
       console.log(err);
@@ -22,16 +35,14 @@ task('build-server', [], function(params) {
 
 
 desc('Build the borax-in-client file.');
-task('build-client', [], function(params) {
+task('build-client', [outputclientpath], function() {});
+directory(outputdir);
+file(outputclientpath, outputclientdeps, function() {
   var i = 0
     , erred = false
     , contents = {}
-    , files = [
-        './lib/client-status-handlers.js',
-        './lib/client-media-renderers.js',
-        './lib/client-jquery-provider.js',
-        './lib/borax-in-client-api.js'
-      ]
+    , files = clientfilepieces
+    , boraxDef = "if(typeof(borax) === 'undefined') {borax = {}};";
     ;
 
   files.forEach(function(file) {
@@ -46,21 +57,30 @@ task('build-client', [], function(params) {
       if(i == files.length) {
         if(!erred) {
           var outputfile = 'borax-in-client.js';
-          fs.mkdir(outputdir);
           var outputpath = path.join(outputdir, outputfile);
           var output = 'var borax = {}; (function(borax) {\n';
           files.forEach(function(file) {
-            output += contents[file];
+            var content = contents[file].replace(boraxDef, '');
+            var exportStatementIndex = content.indexOf(exportStatement);
+            if(exportStatementIndex > 0) {
+              content = content.substring(0, exportStatementIndex);
+            }
+            content = content.trim();
+            if(content.length > 0) {
+              content += '\n';
+            }
+            output += content;
           });
           output += '})(borax);\n' +
-                    'if(typeof(exports) !== "undefined") {\n' +
-                    '  exports["borax-in-client"] = borax;\n' +
+                    'if(typeof(module) !== "undefined") {\n' +
+                    '  module.exports = borax;\n' +
                     '} else {\n' +
-                    '  exports = {"borax-in-client": borax};\n' +
+                    '  module = {exports: borax};\n' +
                     '}';
-          fs.writeFile(outputpath, output);
+          fs.writeFile(outputpath, output, 'utf-8', function() {
+            complete();
+          });
         }
-        complete();
       }
     })
   });
