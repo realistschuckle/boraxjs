@@ -56,8 +56,6 @@ file(outputclientpath, outputclientdeps, function() {
       i += 1;
       if(i == files.length) {
         if(!erred) {
-          var outputfile = 'borax-in-client.js';
-          var outputpath = path.join(outputdir, outputfile);
           var output = 'var borax = {}; (function(borax) {\n';
           files.forEach(function(file) {
             var content = contents[file].replace(boraxDef, '');
@@ -77,7 +75,7 @@ file(outputclientpath, outputclientdeps, function() {
                     '} else {\n' +
                     '  module = {exports: borax};\n' +
                     '}';
-          fs.writeFile(outputpath, output, 'utf-8', function() {
+          fs.writeFile(outputclientpath, output, 'utf-8', function() {
             complete();
           });
         }
