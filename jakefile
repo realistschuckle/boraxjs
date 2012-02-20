@@ -1,6 +1,6 @@
 var fs = require('fs')
   , path = require('path')
-  , exportStatement = "if(typeof(exports) !== 'undefined') {"
+  , exportStatement = "if(typeof(module) !== 'undefined') {"
   , outputdir = 'distro'
   , outputclientfile = 'borax-in-client.js'
   , outputserverfile = 'borax-in-server.js'
