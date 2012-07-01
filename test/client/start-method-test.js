@@ -6,7 +6,10 @@ var vows = require('vows')
   ;
 
 vows.describe('BORIC Start Method').addBatch({
-  'first checks links for start relation': {
+  'first checks if second argument is a url and uses it, if found': {
+    
+  },
+  'then checks links for start relation to use and uses it, if found': {
     topic: function() {
       var faker = fakedom.faker()
                          .stub('getElementsByTagName')
@@ -32,7 +35,7 @@ vows.describe('BORIC Start Method').addBatch({
       assert.equal(fn, fakedom.boric.transition);
     }
   },
-  'if start relations does not exist, then uses current page as start by': {
+  'then defaults to using current page as start by': {
     topic: function() {
       var atags = [
         fakedom.node({href: '/first.html'}),
@@ -130,4 +133,4 @@ vows.describe('BORIC Start Method').addBatch({
       assert.equal(fn, fakedom.boric.transition);
     },
   }
-}).export(module);
+}).exp
